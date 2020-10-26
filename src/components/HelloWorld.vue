@@ -1,138 +1,94 @@
-<template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          rel="noopener"
-          >router</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex"
-          target="_blank"
-          rel="noopener"
-          >vuex</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-jest"
-          target="_blank"
-          rel="noopener"
-          >unit-jest</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+  <template>
+  <div>
+    <table class="table">
+                <thead>
+                    <tr class="trHeader">
+                      <th>
+                        Gender
+                      </th>
+                      <th>
+                        Name
+                      </th>
+                      <th>
+                        City
+                      </th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr class="row" v-for="(value, key) in contact" :key="key">
+                    <td>{{value.gender}}</td>
+                    <td>{{value.name.first}}</td>
+                    <td>{{value.location.city}}</td>
+                  </tr>
+                </tbody>
+    </table>
+     
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "HelloWorld",
-  props: {
-    msg: String
+  data() {
+    return {
+      contact: null
+    };
+  },
+  created: function() {
+    axios
+      .get("https://randomuser.me/api/?results=20")
+      .then(res => {
+        this.contact = res.data.results;
+      });
   }
 };
 </script>
+<style lang="scss">
+.container-table {
+    overflow-x: auto;
+    max-width: 100%;
+}
+.table {
+    width: auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    width: 100%;
+    min-width: 900px;
+    margin: 0 auto;
+    position: relative;
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
+    .trHeader{
+      th{
+        text-align: center;
+      }
+    }
+
+    thead {
+        background-color: #ccc;
+    }
+    .row {
+    color: #808080;
+    height: 50px;
+    border-bottom: 1px solid #ccc;
+
+    td {
+        text-align: center;
+    }
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.row:nth-child(odd) {
+    background-color: #f5f5f5;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
 }
-a {
-  color: #42b983;
+
+@media (min-width: 768px) {
+    .table {
+        width: 100%;
+        overflow-x: hidden;
+        .trHeader {
+            height: 60px;
+        }
+    }
 }
 </style>
